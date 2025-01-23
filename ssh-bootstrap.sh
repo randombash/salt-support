@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 #===============================================================================
 #          FILE: ssh-bootstrap.sh
@@ -25,7 +25,7 @@ __ScriptVersion="2022.10.04"
 __ScriptName="ssh-bootstrap.sh"
 
 _Ssh_Key="${HOME}/.ssh/id_rsa"
-_Type="minion"
+_Type="controller"
 
 #---  PRE-FLIGHT  --------------------------------------------------------------
 #  DESCRIPTION:  Verify dependencies can be found
@@ -84,12 +84,12 @@ fi
 while getopts ":hc::n::m::k:t:" opt 
 do
     case "${opt}" in
-        h)  usage; exit 0;;
-        c)  _Target=$OPTARG;;
-        n)  _Minion_Name=$OPTARG;;
-        m)  _Master_Name=$OPTARG;;
-        k)  _Ssh_Key=$OPTARG;;
-        t)  _Type=$OPTARG;;
+        h)  usage; exit 0 ;;
+        c)  _Target=$OPTARG ; echo "_Target=$_Target" ;;
+        n)  _Minion_Name=$OPTARG; echo _Minion_Name=$_Minion_Name  ;;
+        m)  _Master_Name=$OPTARG ;;
+        k)  _Ssh_Key=$OPTARG ;;
+        t)  _Type=$OPTARG ;;
         \?) echo
             echo "Option does not exist : $OPTARG"
             usage
@@ -98,9 +98,14 @@ do
     esac
 done
 
+echo -e "DEBUG: _Target: $_Target"
+echo -e "DEBUG: _Target: $_Target\n_Minion_Name: $_Minion_Name\n _Ssh_Key: $_Ssh_Key\n_Type: $_Type\n"
+
 shift $((OPTIND-1))
 
 _Options="-i ${_Ssh_Key} ${_Target}"
+
+echo -e "DEBUG2: _Target: $_Target\n_Minion_Name: $_Minion_Name\n _Ssh_Key: $_Ssh_Key\n_Type: $_Type\n"
 
 case "${_Type}" in
   develop)
